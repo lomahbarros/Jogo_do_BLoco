@@ -73,11 +73,16 @@ def movimentar_jogador(evento): # Precisa receber  como parâmetro a telca que o
     if evento.type == pygame.KEYDOWN:
         print("Andou com o jogador") # teste de setas
         if evento.key == pygame.K_RIGHT: # Seta para esquerda
-            jogador.x = jogador.x + 5
+            if (jogador.x + tamanho_do_jogador) < tamanho_da_tela[0]:
+                jogador.x = jogador.x + 5
         if evento.key == pygame.K_LEFT: # Seta para direita
-            jogador.x = jogador.x - 5
+            if jogador.x > 0:
+                jogador.x = jogador.x - 5
 
-#def movimentar_bola():
+def movimentar_bola(bola):
+    bola.x = bola.x + movimento_da_bola[0]
+    bola.y = bola.y + movimento_da_bola[1]
+
 
 
 
@@ -94,6 +99,7 @@ while not fim_de_jogo:
             fim_de_jogo = True
 
         movimentar_jogador(evento)
+        movimentar_bola()
 
     pygame.time.wait(1) # Atualizar a tela a cada milissegundo - espera 1 milissegundo entre cada quadro
     pygame.display.flip()
