@@ -80,8 +80,24 @@ def movimentar_jogador(evento): # Precisa receber  como parâmetro a telca que o
                 jogador.x = jogador.x - 5
 
 def movimentar_bola(bola):
-    bola.x = bola.x + movimento_da_bola[0]
-    bola.y = bola.y + movimento_da_bola[1]
+    movimento = movimento_da_bola
+    bola.x = bola.x + movimento[0]
+    bola.y = bola.y + movimento[1]
+
+    if bola.x <= 0:
+        movimento[0] = -movimento[0]
+    if bola.y <= 0:
+        movimento[1] = -movimento[1]
+    if bola.x + tamanho_da_bola >= tamanho_da_tela[0]:
+        movimento[0] = - movimento[0]
+    if bola.y + tamanho_da_bola >= tamanho_da_tela[1]:
+            movimento[1] = -movimento[1]
+    
+    
+
+
+
+    return movimento
 
 
 
@@ -99,7 +115,7 @@ while not fim_de_jogo:
             fim_de_jogo = True
 
         movimentar_jogador(evento)
-        movimentar_bola()
+        novimento_bole_return = movimentar_bola(bola)
 
     pygame.time.wait(1) # Atualizar a tela a cada milissegundo - espera 1 milissegundo entre cada quadro
     pygame.display.flip()
