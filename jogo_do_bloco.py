@@ -50,7 +50,7 @@ cores = {"branca": (255,255,255),
 
 fim_de_jogo = False
 pontuacao = 0
-movimento_da_bola = [1,1] # Feito com lista pois é preciso mudar o movimento durante o jogo
+movimento_da_bola = [1,-1] # Feito com lista pois é preciso mudar o movimento durante o jogo
 # Criar as funções do jogo
 
 
@@ -71,7 +71,7 @@ def desenhar_blocos_natela(bloco):
 # Criar as regras do jogo
 def movimentar_jogador(evento): # Precisa receber  como parâmetro a telca que o usuario clicou
     if evento.type == pygame.KEYDOWN:
-        print("Andou com o jogador") # teste de setas
+        #print("Andou com o jogador") # teste de setas
         if evento.key == pygame.K_RIGHT: # Seta para esquerda
             if (jogador.x + tamanho_do_jogador) < tamanho_da_tela[0]:
                 jogador.x = jogador.x + 5
@@ -92,6 +92,14 @@ def movimentar_bola(bola):
         movimento[0] = - movimento[0]
     if bola.y + tamanho_da_bola >= tamanho_da_tela[1]:
             movimento[1] = -movimento[1]
+
+    if jogador.collidepoint(bola.x, bola.y): # Verificar colisão da usando o Rect que já possui um parametro para verificar colisão
+        movimento[1] = - movimento[1]
+
+    for  bloco in  blocos:
+        if bloco.collidepoint(bola.x, bola.y):
+            movimento[1] = - movimento[1]
+        return movimento
     
     
 
@@ -114,8 +122,9 @@ while not fim_de_jogo:
         if evento.type == pygame.QUIT:
             fim_de_jogo = True
 
-        movimentar_jogador(evento)
-        novimento_bole_return = movimentar_bola(bola)
+        
+    movimentar_jogador(evento)
+    novimento_bola_return = movimentar_bola(bola)
 
     pygame.time.wait(1) # Atualizar a tela a cada milissegundo - espera 1 milissegundo entre cada quadro
     pygame.display.flip()
