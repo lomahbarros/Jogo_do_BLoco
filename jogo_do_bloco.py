@@ -80,14 +80,14 @@ def movimentar_jogador(evento): # Precisa receber  como parâmetro a telca que o
                 jogador.x = jogador.x - 5
 
 def movimentar_bola(bola):
-    movimento = movimento_da_bola
-    bola.x = bola.x + movimento[0]
+    movimento = movimento_da_bola # Variável duplicada por não trabalhar com "OOP"
+    bola.x = bola.x + movimento[0] # Soma do bola.x mas o movimento do indice 0 da tupla criada para movimentar a bola
     bola.y = bola.y + movimento[1]
 
     if bola.x <= 0:
-        movimento[0] = -movimento[0]
+        movimento[0] = - movimento[0]
     if bola.y <= 0:
-        movimento[1] = -movimento[1]
+        movimento[1] = - movimento[1]
     if bola.x + tamanho_da_bola >= tamanho_da_tela[0]:
         movimento[0] = - movimento[0]
     if bola.y + tamanho_da_bola >= tamanho_da_tela[1]:
@@ -97,14 +97,9 @@ def movimentar_bola(bola):
         movimento[1] = - movimento[1]
 
     for  bloco in  blocos:
-        if bloco.collidepoint(bola.x, bola.y):
+        if bloco.collidepoint(bola.x , bola.y):
             movimento[1] = - movimento[1]
-        return movimento
-    
-    
-
-
-
+       
     return movimento
 
 
