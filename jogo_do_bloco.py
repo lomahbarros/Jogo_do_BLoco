@@ -91,19 +91,28 @@ def movimentar_bola(bola):
     if bola.x + tamanho_da_bola >= tamanho_da_tela[0]:
         movimento[0] = - movimento[0]
     if bola.y + tamanho_da_bola >= tamanho_da_tela[1]:
-            movimento[1] = -movimento[1]
+       # movimento[0] = - movimento[0]
+        movimento = None 
+            
 
     if jogador.collidepoint(bola.x, bola.y): # Verificar colisão da usando o Rect que já possui um parametro para verificar colisão
         movimento[1] = - movimento[1]
 
     for  bloco in  blocos:
         if bloco.collidepoint(bola.x , bola.y):
+            blocos.remove(bloco) # remoção dos blocos com collidepoint
             movimento[1] = - movimento[1]
        
     return movimento
 
-
-
+def atualizar_pontuacao(pontuacao):
+    fonte = pygame.font.Font(None,30) # Descrever como será o texto: fonte e tamanho
+    texto = fonte.render(f"Pontuação: {pontuacao}", 1, cores["amarela"]) # Criar o texto
+    tela.blit(texto,(0,780)) # Desenhar o texto na tela com as coordenadas de onde ficará
+    if pontuacao >= qtd_de_blocos: # Se a pontuação e o total de blocos  return verdadeiro
+        return True
+    else:
+        return False
 
 
 blocos = criar_blocos(qtd_linha_de_bloco, qtd_bloco_por_linha) # variável que recebe a criação dos blocos "def criar_blocos(qtd_bloco_linha, qtd_linha_bloco):"
@@ -113,6 +122,7 @@ blocos = criar_blocos(qtd_linha_de_bloco, qtd_bloco_por_linha) # variável que r
 while not fim_de_jogo:
     desenhar_inicio_do_jogo()
     desenhar_blocos_natela(blocos)
+    fim_de_jogo = atualizar_pontuacao(qtd_de_blocos - len(blocos))
     for evento in pygame.event.get():    
         if evento.type == pygame.QUIT:
             fim_de_jogo = True
@@ -120,6 +130,8 @@ while not fim_de_jogo:
         
     movimentar_jogador(evento)
     novimento_bola_return = movimentar_bola(bola)
+    if not novimento_bola_return:  # Se o retorno do movimento da bola é none, então fim do jogo é true  
+        fim_de_jogo = True
 
     pygame.time.wait(1) # Atualizar a tela a cada milissegundo - espera 1 milissegundo entre cada quadro
     pygame.display.flip()
